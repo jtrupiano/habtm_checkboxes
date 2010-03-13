@@ -1,0 +1,22 @@
+HabtmCheckboxes
+===============
+
+ActionView helper to render checkboxes with labels for a HABTM assignment in a form.
+
+  * Labels have the for attribute set correctly
+  * Hidden field included so that you can actually delete all of the associations in an update without adjusting your controller
+
+
+Example
+=======
+
+  habtm_checkboxes(@organizer, :event_ids, @events, :name)
+
+  <%= hidden_field_tag "organizer[event_ids][]", "" %>
+  <% @events.each do |event| -%>
+    <%= check_box_tag "organizer[event_ids][]", event.id, @organizer.event_ids.include?(event.id), :id => "organizer_events_id_#{event.id}" %>
+    <%= label_tag "organizer_events_id_#{event.id}", h(event.name) %>
+  <% end -%>
+
+
+Copyright (c) 2010 [John Trupiano], released under the MIT license
