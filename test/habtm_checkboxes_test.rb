@@ -1,19 +1,10 @@
 require 'test_helper'
-require "active_support"
-require "action_controller"
+require 'action_controller'
 require 'action_view/helpers'
 require 'habtm_checkboxes'
 
 # Mock objects
 module HabtmCheckboxes
-  #   habtm_checkboxes(@organizer, :event_ids, @events, :name)
-  #
-  #   <%= hidden_field_tag "organizer[event_ids][]", "" %>
-  #   <% @events.each do |event| -%>
-  #     <%= check_box_tag "organizer[event_ids][]", event.id, @organizer.event_ids.include?(event.id), :id => "organizer_events_id_#{event.id}" %>
-  #     <%= label_tag "organizer_events_id_#{event.id}", h(event.name) %>
-  #   <% end -%>
-  
   class Organizer
     def event_ids
       [1]
@@ -39,9 +30,13 @@ class HabtmCheckboxesTest < ActionController::TestCase
 
     doc = HTML::Document.new html
     assert_select doc.root, 'input', :type => 'hidden', :name => 'organizer[event_ids][]'
-    assert_select doc.root, 'input', :id => 'organizer_events_id_1'
-    assert_select doc.root, 'label', :for => 'organizer_events_id_1'
-    assert_select doc.root, 'input', :type => 'checkbox', :id => 'organizer_events_id_2'
-    assert_select doc.root, 'label', :for => 'organizer_events_id_2'
+    assert_select doc.root, 'input#organizer_event_ids_1', :type => 'checkbox'
+    assert_select doc.root, 'label[for=organizer_event_ids_1]'
+    assert_select doc.root, 'input#organizer_event_ids_2', :type => 'checkbox'
+    assert_select doc.root, 'label[for=organizer_event_ids_2]'
+    # Sanity check
+    assert_select doc.root, 'label[for=organizer_event_ids_3]', :count => 0
+    assert_select doc.root, 'input#organizer_event_ids_3', :count => 0
   end
 end
+
