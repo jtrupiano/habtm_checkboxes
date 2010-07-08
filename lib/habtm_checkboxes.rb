@@ -20,7 +20,7 @@ module HabtmCheckboxes
       cbx_id = "#{obj_to_s}_#{column}_#{assignment_obj.id}"
       html += check_box_tag field_name, assignment_obj.id, obj.send(column).include?(assignment_obj.id), :id => cbx_id
       html += label_tag cbx_id, h(assignment_obj.send(assignment_object_display_column))
-      html += "<br/>"
+      html += content_tag(:br)
     end
     html
   end
